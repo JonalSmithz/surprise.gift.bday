@@ -24,8 +24,8 @@
       background-image: url('https://media1.tenor.com/m/HSxxt1scQXYAAAAC/cat-hugs.gif');
       background-position: center;
       background-repeat: no-repeat;
-      background-size: cover; /* default desktop fit */
-      background-attachment: scroll; /* fixed causes mobile issues */
+      background-size: cover;
+      background-attachment: scroll;
       position: relative;
       overflow: hidden;
       text-align: center;
@@ -126,12 +126,13 @@
     /* Mobile-specific fix to guarantee full background fit */
     @media (max-width: 768px) {
       body {
-        background-size: 100% 100%; /* force full stretch */
+        background-size: 100% 100%;
       }
     }
   </style>
 </head>
 <body>
+  <!-- Floating hearts container -->
   <div id="hearts"></div>
 
   <div class="box">
@@ -212,4 +213,28 @@
     }
 
     function fadeReset() {
-      const q = document.getElementById("
+      const q = document.getElementById("question");
+      const g = document.getElementById("gif");
+      q.style.animation = "none";
+      g.style.animation = "none";
+      void q.offsetWidth; 
+      void g.offsetWidth;
+      q.style.animation = "fadeIn 1s ease-in-out forwards";
+      g.style.animation = "fadeIn 1s ease-in-out forwards";
+    }
+
+    // Floating hearts
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.innerHTML = "❤";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = Math.random() * 20 + 15 + "px";
+      heart.style.animationDuration = (Math.random() * 3 + 4) + "s"; 
+      document.getElementById("hearts").appendChild(heart);
+      setTimeout(() => { heart.remove(); }, 7000);
+    }
+    setInterval(createHeart, 500);
+  </script>
+</body>
+</html>
