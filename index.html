@@ -5,25 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Will You Be My Girlfriend?</title>
   <style>
-    body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-  background-image: url('https://media1.tenor.com/m/HSxxt1scQXYAAAAC/cat-hugs.gif');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: scroll; /* instead of fixed */
-  position: relative;
-  overflow: hidden;
-  text-align: center;
-}
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+    }
 
-    /* Dark overlay for readability */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      min-width: 100vw;
+      margin: 0;
+      background-image: url('https://media1.tenor.com/m/HSxxt1scQXYAAAAC/cat-hugs.gif');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover; /* default desktop fit */
+      background-attachment: scroll; /* fixed causes mobile issues */
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
     body::before {
       content: "";
       position: absolute;
@@ -32,7 +39,6 @@
       z-index: 0;
     }
 
-    /* Floating hearts animation */
     .heart {
       position: absolute;
       bottom: -20px;
@@ -43,6 +49,7 @@
       filter: drop-shadow(0 0 8px #ff4d4d);
       z-index: 1;
     }
+
     @keyframes floatUp {
       0% { transform: translateY(0) scale(1); opacity: 0.7; }
       50% { opacity: 1; }
@@ -111,15 +118,20 @@
       transform: scale(1.05);
     }
 
-    /* Fade-in animation */
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
+    /* Mobile-specific fix to guarantee full background fit */
+    @media (max-width: 768px) {
+      body {
+        background-size: 100% 100%; /* force full stretch */
+      }
+    }
   </style>
 </head>
 <body>
-  <!-- Floating hearts container -->
   <div id="hearts"></div>
 
   <div class="box">
@@ -131,13 +143,9 @@
     </div>
   </div>
 
-  <!-- EmailJS Library -->
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
-    // Init EmailJS (replace with your own PUBLIC KEY from EmailJS dashboard)
-    (function() {
-      emailjs.init("jCrOnfUqrhB1g5xMA");
-    })();
+    emailjs.init("jCrOnfUqrhB1g5xMA");
 
     const questions = [
       "Are you sure? 🥺",
@@ -170,7 +178,6 @@
 
     function yesClicked() {
       responses.push(`Q${current+1}: Yes`);
-
       if (current < questions.length) {
         fadeReset();
         document.getElementById("question").innerText = questions[current];
@@ -204,30 +211,5 @@
       });
     }
 
-    // Fade reset for animation replay
     function fadeReset() {
-      const q = document.getElementById("question");
-      const g = document.getElementById("gif");
-      q.style.animation = "none";
-      g.style.animation = "none";
-      void q.offsetWidth; // trigger reflow
-      void g.offsetWidth;
-      q.style.animation = "fadeIn 1s ease-in-out forwards";
-      g.style.animation = "fadeIn 1s ease-in-out forwards";
-    }
-
-    // Floating hearts
-    function createHeart() {
-      const heart = document.createElement("div");
-      heart.className = "heart";
-      heart.innerHTML = "❤";
-      heart.style.left = Math.random() * 100 + "vw";
-      heart.style.fontSize = Math.random() * 20 + 15 + "px";
-      heart.style.animationDuration = (Math.random() * 3 + 4) + "s"; 
-      document.getElementById("hearts").appendChild(heart);
-      setTimeout(() => { heart.remove(); }, 7000);
-    }
-    setInterval(createHeart, 500);
-  </script>
-</body>
-</html>
+      const q = document.getElementById("
